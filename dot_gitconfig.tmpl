@@ -1,0 +1,11 @@
+[init]
+	defaultBranch = main
+[user]
+	email = {{ .git.email }}
+	name = {{ .git.name }}
+[alias]
+  l = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ah%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+  wc = show --name-status
+[core]
+	autocrlf = input
+	editor = nvim
