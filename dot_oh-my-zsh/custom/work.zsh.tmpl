@@ -3,10 +3,6 @@
 # enable azure plugin
 plugins+=(azure)
 
-# github copilot aliases
-alias hey="gh copilot explain"
-alias suggest="gc copilot suggest"
-
 {{ if .workstation.code.path }}
 # to make code callable from wsl
 [ -f {{ .workstation.code.path }} ] && alias code='{{ .workstation.code.path }}'
