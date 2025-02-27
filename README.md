@@ -6,8 +6,7 @@ Create the main configuration in _~/.config/chezmoi/chezmoi.yaml_ with the follo
 
 ```yaml
 data:
-  host: "" # either work or home to distinguish workstations
   git:
-    email: "" # e-mail address used in git
+    email: "" # git email address
     name: "" # git username
 ```
