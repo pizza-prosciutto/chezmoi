@@ -44,6 +44,7 @@ vim.opt.expandtab = true        -- Use spaces instead of tabs
 vim.opt.softtabstop = indent    -- Number of spaces a <Tab> key inserts
 vim.opt.number = true           -- Display line numbers
 vim.opt.mouse = a               -- Enable mouse
+vim.opt.list = true             -- Display hidden characters
 
 -- Key bindings
 vim.keymap.set("n", "<C-e>", ":NERDTreeToggle<CR>", { noremap = true, silent = true})
