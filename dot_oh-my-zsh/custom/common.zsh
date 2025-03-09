@@ -1,29 +1,24 @@
 alias ls="ls --color -hal"
 alias pd="pushd"
 
-#############
-# alias bat #
-#############
+##############
+# set EDITOR #
+##############
 
-[ -x "$(which batcat)" ] && alias bat="batcat"
+if command -v nvim >/dev/null 2>&1 && [ -z "$EDITOR" ]; then
+    export EDITOR="nvim"
+fi
 
-####################
-# add nvim to path #
-####################
+###################################
+# install syntax highlight plugin #
+###################################
 
-[ -f /opt/nvim-linux64/bin/nvim ] && export PATH="$PATH:/opt/nvim-linux64/bin"
-
-######################
-# set EDITOR to nvim #
-######################
-
-[ -x "$(which nvim)" ] && export EDITOR="nvim"
-
-#########################
-# load syntax highlight #
-#########################
-
-[ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+PLUGIN_DIR=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+if [ ! -d $PLUGIN_DIR ] && command -v git >/dev/null 2>&1; then
+    echo "\033[0;36m>>> Installing zsh-syntax-highlighting plugin <<<\033[0m"
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $PLUGIN_DIR
+    omz plugin enable zsh-syntax-highlighting
+fi
 
 #########################
 # some z-shell settings #
@@ -45,29 +40,33 @@ setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks from each command line 
 # fzf #
 #######
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
-[ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh 
+if command -v fzf >/dev/null 2>&1; then
 
-# theme from https://vitormv.github.io/fzf-themes/
+    # enable shell integration
 
-export FZF_DEFAULT_OPTS='
-  --color=fg:#d0d0d0,fg+:#d0d0d0,bg:#121212,bg+:#262626
-  --color=hl:#5f87af,hl+:#5fd7ff,info:#afaf87,marker:#87ff00
-  --color=prompt:#d7005f,spinner:#af5fff,pointer:#af5fff,header:#87afaf
-  --color=border:#262626,label:#aeaeae,query:#d9d9d9
-  --border="rounded" --border-label="" --preview-window="border-rounded" --prompt="> "
-  --marker=">" --pointer="👉" --separator="─" --scrollbar="│"'
+    . <(fzf --zsh)
 
-# override default command -> show dirs only
+    # theme from https://vitormv.github.io/fzf-themes/
 
-export FZF_ALT_C_COMMAND='
-  find . -type d -maxdepth 1 | sort'
+    export FZF_DEFAULT_OPTS='
+    --color=fg:#d0d0d0,fg+:#d0d0d0,bg:#121212,bg+:#262626
+    --color=hl:#5f87af,hl+:#5fd7ff,info:#afaf87,marker:#87ff00
+    --color=prompt:#d7005f,spinner:#af5fff,pointer:#af5fff,header:#87afaf
+    --color=border:#262626,label:#aeaeae,query:#d9d9d9
+    --border="rounded" --border-label="" --preview-window="border-rounded" --prompt="> "
+    --marker=">" --pointer="👉" --separator="─" --scrollbar="│"'
 
-# add tree preview
+    # override default command -> show dirs only
 
-export FZF_ALT_C_OPTS='
-  --preview "tree -L 1 --dirsfirst -C {}"'
+    export FZF_ALT_C_COMMAND='
+    find . -type d -maxdepth 1 | sort'
+
+    # add tree preview
+
+    export FZF_ALT_C_OPTS='
+    --preview "tree -L 1 --dirsfirst -C {}"'
+
+fi
 
 ##################
 # cheat shortcut #
@@ -76,4 +75,3 @@ export FZF_ALT_C_OPTS='
 function cheat() {
   curl --silent cheat.sh/$1 | bat
 }
-
