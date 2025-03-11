@@ -14,7 +14,7 @@ fi
 ###################################
 
 PLUGIN_DIR=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-if [ ! -d $PLUGIN_DIR ] && command -v git >/dev/null 2>&1; then
+if [ ! -d $PLUGIN_DIR ] && command -v git >/dev/null 2>&1 && ! grep -qE '^plugins=\([^)]*\bzsh-syntax-highlighting\b[^)]*\)$' ~/.zshrc; then
     echo "\033[0;36m>>> Installing zsh-syntax-highlighting plugin <<<\033[0m"
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $PLUGIN_DIR
     omz plugin enable zsh-syntax-highlighting
