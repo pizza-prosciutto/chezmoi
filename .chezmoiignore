@@ -1,3 +1,6 @@
 {{- if ne .workstation "home" }}
 .config/ghostty/**
 {{- end }}
+{{- if ne .workstation "rpi" }}
+.tmux.conf
+{{- end }}
