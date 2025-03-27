@@ -1,0 +1,50 @@
+#!/bin/zsh
+
+E_CMD_NOT_FOUND=1   # command not found
+E_NON_EMPTY_DIR=2   # non-empty plugin directory
+E_INSTALLED=3       # plugin already installed
+OK=0
+
+typeset -A PLUGINS
+PLUGINS=(zsh-syntax-highlighting "https://github.com/zsh-users/zsh-syntax-highlighting.git")
+
+check_command() {
+    if ! command -v "$1" >/dev/null 2>&1; then
+        echo -e "\033[0;91m>>> $1 not found, won't install zsh plugins <<<\033[0m"
+        return $E_CMD_NOT_FOUND
+    fi
+    return $OK
+}
+
+install_plugin() {
+    local plugin=$1
+    local repo_url=$2
+    local plugin_dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/$plugin
+
+    if [ -d "$plugin_dir" ]; then
+        echo -e "\033[0;93m>>> non-empty directory: $plugin_dir, $plugin will be skipped <<<\033[0m"
+        return $E_NON_EMPTY_DIR
+    fi
+
+    if grep -qE "^plugins=\([^)]*\b$plugin\b[^)]*\)$" ~/.zshrc; then
+        echo -e "\033[0;93m>>> $plugin is already enabled in ~/.zshrc, will be skipped <<<\033[0m"
+        return $E_INSTALLED
+    fi
+
+    echo -e "\033[0;36m>>> Installing $plugin <<<\033[0m"
+    git clone "$repo_url" "$plugin_dir"
+    omz plugin enable "$plugin"
+    return $OK
+}
+
+[ -f "$ZSH/oh-my-zsh.sh" ] && . "$ZSH/oh-my-zsh.sh"
+
+if check_command "git" && check_command "omz"; then
+    for plugin in ${(k)PLUGINS}; do
+        if install_plugin "$plugin" "$PLUGINS[$plugin]"; then
+            echo -e "\033[0;36m>>> $plugin successfully installed <<<\033[0m"
+        fi
+    done
+fi
+
+return 0
