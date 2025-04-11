@@ -1,5 +1,18 @@
 #!/bin/zsh
 
+# ASCII Art: https://patorjk.com/software/taag
+# Font: Merlin1
+
+cat << "EOF"
+    ______   ___      ___  ________         _______   ___       ____  ____   _______   __    _____  ___    ________  
+   /    " \ |"  \    /"  |("      "\       |   __ "\ |"  |     ("  _||_ " | /" _   "| |" \  (\"   \|"  \  /"       ) 
+  // ____  \ \   \  //   | \___/   :)      (. |__) :)||  |     |   (  ) : |(: ( \___) ||  | |.\\   \    |(:   \___/  
+ /  /    ) :)/\\  \/.    |   /  ___/       |:  ____/ |:  |     (:  |  | . ) \/ \      |:  | |: \.   \\  | \___  \    
+(: (____/ //|: \.        |  //  \__        (|  /      \  |___   \\ \__/ //  //  \ ___ |.  | |.  \    \. |  __/  \\   
+ \        / |.  \    /:  | (:   / "\      /|__/ \    ( \_|:  \  /\\ __ //\ (:   _(  _|/\  |\|    \    \ | /" \   :)  
+  \"_____/  |___|\__/|___|  \_______)    (_______)    \_______)(__________) \_______)(__\_|_)\___|\____\)(_______/   
+EOF
+
 E_CMD_NOT_FOUND=1   # command not found
 E_NON_EMPTY_DIR=2   # non-empty plugin directory
 E_INSTALLED=3       # plugin already installed
@@ -22,7 +35,7 @@ install_plugin() {
     local plugin_dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/$plugin
 
     if [ -d "$plugin_dir" ]; then
-        echo -e "\033[0;93m>>> non-empty directory: $plugin_dir, $plugin will be skipped <<<\033[0m"
+        echo -e "\033[0;93m>>> $plugin will be skipped: non-empty target directory [$plugin_dir] <<<\033[0m"
         return $E_NON_EMPTY_DIR
     fi
 
