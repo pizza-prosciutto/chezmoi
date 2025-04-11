@@ -1,5 +1,16 @@
 #!/bin/zsh
 
+# ASCII Art: https://patorjk.com/software/taag
+
+cat << "EOF"
+ _____  _____ __  __   ____  __    __  _____________   _______
+/__  / / ___// / / /  / __ \/ /   / / / / ____/  _/ | / / ___/
+  / /  \__ \/ /_/ /  / /_/ / /   / / / / / __ / //  |/ /\__ \ 
+ / /_____/ / __  /  / ____/ /___/ /_/ / /_/ // // /|  /___/ / 
+/____/____/_/ /_/  /_/   /_____/\____/\____/___/_/ |_//____/  
+
+EOF
+
 E_CMD_NOT_FOUND=1   # command not found
 E_NON_EMPTY_DIR=2   # non-empty plugin directory
 E_INSTALLED=3       # plugin already installed
@@ -22,7 +33,7 @@ install_plugin() {
     local plugin_dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/$plugin
 
     if [ -d "$plugin_dir" ]; then
-        echo -e "\033[0;93m>>> non-empty directory: $plugin_dir, $plugin will be skipped <<<\033[0m"
+        echo -e "\033[0;93m>>> $plugin will be skipped: non-empty target directory [$plugin_dir] <<<\033[0m"
         return $E_NON_EMPTY_DIR
     fi
 
