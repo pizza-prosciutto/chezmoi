@@ -16,12 +16,17 @@ E_NON_EMPTY_DIR=2   # non-empty plugin directory
 E_INSTALLED=3       # plugin already installed
 OK=0
 
+ERROR="\033[0;91m"
+WARNING="\033[0;93m"
+INFO="\033[0;36m"
+RESET_COLOR="\033[0m"
+
 typeset -A PLUGINS
 PLUGINS=(zsh-syntax-highlighting "https://github.com/zsh-users/zsh-syntax-highlighting.git")
 
 check_command() {
     if ! command -v "$1" >/dev/null 2>&1; then
-        echo -e "\033[0;91m>>> $1 not found, won't install zsh plugins <<<\033[0m"
+        echo -e "${ERROR}>>> $1 not found, won't install zsh plugins <<<${RESET_COLOR}"
         return $E_CMD_NOT_FOUND
     fi
     return $OK
@@ -33,16 +38,16 @@ install_plugin() {
     local plugin_dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/$plugin
 
     if [ -d "$plugin_dir" ]; then
-        echo -e "\033[0;93m>>> $plugin will be skipped: non-empty target directory [$plugin_dir] <<<\033[0m"
+        echo -e "${WARNING}>>> $plugin will be skipped: non-empty target directory [$plugin_dir] <<<${RESET_COLOR}"
         return $E_NON_EMPTY_DIR
     fi
 
     if grep -qE "^plugins=\([^)]*\b$plugin\b[^)]*\)$" ~/.zshrc; then
-        echo -e "\033[0;93m>>> $plugin is already enabled in ~/.zshrc, will be skipped <<<\033[0m"
+        echo -e "${WARNING}>>> $plugin is already enabled in ~/.zshrc, will be skipped <<<${RESET_COLOR}"
         return $E_INSTALLED
     fi
 
-    echo -e "\033[0;36m>>> Installing $plugin <<<\033[0m"
+    echo -e "${INFO}>>> Installing $plugin <<<${RESET_COLOR}"
     git clone "$repo_url" "$plugin_dir"
     omz plugin enable "$plugin"
     return $OK
@@ -53,7 +58,7 @@ install_plugin() {
 if check_command "git" && check_command "omz"; then
     for plugin in ${(k)PLUGINS}; do
         if install_plugin "$plugin" "$PLUGINS[$plugin]"; then
-            echo -e "\033[0;36m>>> $plugin successfully installed <<<\033[0m"
+            echo -e "${INFO}>>> $plugin successfully installed <<<${RESET_COLOR}"
         fi
     done
 fi
