@@ -1,4 +1,5 @@
 {{- if ne .workstation "home" }}
+.config/Code/User/settings.json
 .config/ghostty/**
 {{- end }}
 {{- if ne .workstation "rpi" }}
