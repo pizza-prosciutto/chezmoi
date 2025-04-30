@@ -8,6 +8,8 @@
   wc = show --name-status
   dels = log --diff-filter=D --name-only --pretty=oneline
   adds = log --diff-filter=A --name-only --pretty=oneline
+  br = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
+  s = status
 [core]
   autocrlf = input        # use CRLF endings in Windows checkouts
   editor = nvim
