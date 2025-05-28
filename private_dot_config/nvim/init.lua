@@ -1,6 +1,6 @@
 -- Various options
 --
-local indent = 2
+local indent = 4
 vim.opt.tabstop = indent        -- Number of spaces that a <Tab> in the file counts for
 vim.opt.shiftwidth = indent     -- Number of spaces to use for auto-indenting
 vim.opt.expandtab = true        -- Use spaces instead of tabs

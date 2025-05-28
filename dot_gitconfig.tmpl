@@ -1,32 +1,32 @@
 [init]
-  defaultBranch = main
+    defaultBranch = main
 [user]
-  email = {{ .git.email }}
-  name = {{ .git.name }}
+    email = {{ .git.email }}
+    name = {{ .git.name }}
 [alias]
-  l = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ah%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
-  wc = show --name-status
-  dels = log --diff-filter=D --name-only --pretty=oneline
-  adds = log --diff-filter=A --name-only --pretty=oneline
-  br = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
-  s = status
+    l = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ah%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+    wc = show --name-status
+    dels = log --diff-filter=D --name-only --pretty=oneline
+    adds = log --diff-filter=A --name-only --pretty=oneline
+    br = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
+    s = status
 [core]
-  autocrlf = input        # use CRLF endings in Windows checkouts
-  editor = nvim
+    autocrlf = input        # use CRLF endings in Windows checkouts
+    editor = nvim
 [commit]
-  verbose = true          # show diff in commit message editor
+    verbose = true          # show diff in commit message editor
 [help]
-  autocorrect = prompt    # guesses mistyped command and prompts
+    autocorrect = prompt    # guesses mistyped command and prompts
 [push]
-  default = simple        # pushes current branch to same name on remote
-  autoSetupRemote = true  # sets upstream automatically if unset
-  followTags = true       # push tags upon every push
+    default = simple        # pushes current branch to same name on remote
+    autoSetupRemote = true  # sets upstream automatically if unset
+    followTags = true       # push tags upon every push
 [diff]
-  colorMoved = plain      # show code movement in different colors
-  mnemonicPrefix = true   # replaces diff headers a/ and b/ with i/ (index), w/ (work dir), c/ (commit)
-  renames = true          # detects if a file has been renamed
+    colorMoved = plain      # show code movement in different colors
+    mnemonicPrefix = true   # replaces diff headers a/ and b/ with i/ (index), w/ (work dir), c/ (commit)
+    renames = true          # detects if a file has been renamed
 [branch]
-  sort = -committerdate   # sorts list by most recent commit date
+    sort = -committerdate   # sorts list by most recent commit date
 [fetch]
-  prune = true
-  pruneTags = true
+    prune = true
+    pruneTags = true
