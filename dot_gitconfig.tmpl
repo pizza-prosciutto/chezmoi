@@ -9,7 +9,10 @@
     dels = log --diff-filter=D --name-only --pretty=oneline
     adds = log --diff-filter=A --name-only --pretty=oneline
     br = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
-    s = status
+    s = status -sb
+    amend = commit --amend --no-edit
+    unstage = reset HEAD --
+    pf = push --force-with-lease
 [core]
     autocrlf = input        # use CRLF endings in Windows checkouts
     editor = nvim
@@ -22,7 +25,7 @@
     autoSetupRemote = true  # sets upstream automatically if unset
     followTags = true       # push tags upon every push
 [diff]
-    colorMoved = plain      # show code movement in different colors
+    colorMoved = default    # show code movement in different colors
     mnemonicPrefix = true   # replaces diff headers a/ and b/ with i/ (index), w/ (work dir), c/ (commit)
     renames = true          # detects if a file has been renamed
 [branch]
