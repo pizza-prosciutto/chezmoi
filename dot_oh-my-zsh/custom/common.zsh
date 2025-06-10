@@ -1,5 +1,6 @@
 alias ls="ls --color -hal"
 alias pd="pushd"
+export PATH="${PATH:+${PATH}:}/home/viktor/.local/bin"
 
 ##############
 # set EDITOR #
@@ -64,3 +65,17 @@ fi
 function cheat() {
   curl --silent cheat.sh/$1 | bat
 }
+
+################
+# bat settings #
+################
+
+export BAT_THEME="ansi"
+
+################
+# zoxide setup #
+################
+
+if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init zsh)"
+fi
