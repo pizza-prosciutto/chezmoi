@@ -15,7 +15,7 @@ vim.opt.ignorecase = true       -- Ignore case when searching
 vim.opt.incsearch = true        -- Show search results while typing
 vim.opt.smartcase = true        -- Override ignorecase if search contains uppercase
 
-vim.cmd('colorscheme koehler')  -- Set theme
+vim.cmd('colorscheme wildcharm')  -- Set theme
 
 vim.opt.list = true             -- Display hidden characters
 vim.opt.listchars = {
