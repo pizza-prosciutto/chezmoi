@@ -1,4 +1,4 @@
-# Chezmoi-managed Dotfiles 
+# Chezmoi-managed configuration files 
 
 ## Prerequisits
 
