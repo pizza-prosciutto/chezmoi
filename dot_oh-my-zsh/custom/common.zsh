@@ -117,3 +117,51 @@ export BAT_THEME="ansi"
 if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init zsh)"
 fi
+
+############################
+# git interactive checkout #
+############################
+
+gsf() {
+    # Ensure 'git' is installed
+    if ! command -v git >/dev/null 2>&1; then
+        echo "Error: 'git' is not installed or not in PATH." >&2
+        return 1
+    fi
+
+    # Ensure 'fzf' is installed
+    if ! command -v fzf >/dev/null 2>&1; then
+        echo "Error: 'fzf' is not installed or not in PATH." >&2
+        return 1
+    fi
+
+    # Check if we're inside a Git repository
+    if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        echo "Not inside a Git repository." >&2
+        return 1
+    fi
+
+    # Fetch latest remote branches and clean up deleted ones
+    git fetch --all --prune
+
+    # Show local and remote branches (e.g. origin/feature-xyz), de-duplicated
+    local branch
+    branch=$(git for-each-ref --format='%(refname:short)' refs/heads refs/remotes/origin | sort -u | fzf)
+
+    if [[ -n "$branch" ]]; then
+        if [[ "$branch" == origin/* ]]; then
+            # Strip 'origin/' prefix to get local branch name
+            local local_branch="${branch#origin/}"
+
+            # Check if the local branch already exists
+            if git show-ref --verify --quiet "refs/heads/$local_branch"; then
+                git switch "$local_branch"
+            else
+                git switch -c "$local_branch" --track "$branch"
+            fi
+        else
+            # Local branch: switch directly
+            git switch "$branch"
+        fi
+    fi
+}
