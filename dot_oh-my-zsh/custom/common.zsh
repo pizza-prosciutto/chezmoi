@@ -1,18 +1,35 @@
 alias ls="ls --color -hal"
 alias pd="pushd"
-export PATH="${PATH:+${PATH}:}/home/viktor/.local/bin"
+[[ ":$PATH:" != *":$HOME/.local/bin:"* ]] && export PATH="$HOME/.local/bin:$PATH"
 
-##############
-# set EDITOR #
-##############
+#------------
+# utility functions
+#------------
 
-if command -v nvim >/dev/null 2>&1; then
+typeset -A _is_installed_cache
+
+function is_installed() {
+    if [[ -n "${_is_installed_cache[$1]}" ]]; then
+        return 0
+    fi
+    if command -v "$1" >/dev/null 2>&1; then
+        _is_installed_cache[$1]=1
+        return 0
+    fi
+    return 1
+}
+
+#------------
+# set EDITOR
+#------------
+
+if is_installed nvim; then
     export EDITOR="nvim"
 fi
 
-#########################
-# some z-shell settings #
-#########################
+#-----------------------
+# some z-shell settings
+#-----------------------
 
 setopt EXTENDED_HISTORY      # Write the history file in the ':start:elapsed;command' format.
 setopt INC_APPEND_HISTORY    # Write to the history file immediately, not when the shell exits.
@@ -26,11 +43,12 @@ setopt APPEND_HISTORY        # Append to history file (Default).
 setopt HIST_NO_STORE         # Don't store history commands.
 setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks from each command line being added to the history.
 
-##################
-# pacman aliases #
-##################
+#----------------
+# pacman aliases
+#----------------
+
 alias update='sudo pacman -Syu'                 # Full system update
-alias up='sudo pacman -Syu'                     # Shorter alias for update
+alias up='update'                               # Shorter alias for update
 alias install='sudo pacman -S'                  # Install a package
 alias remove='sudo pacman -R'                   # Remove a package
 alias purge='sudo pacman -Rns'                  # Remove with dependencies and configs
@@ -39,7 +57,7 @@ alias list='pacman -Qs'                         # List installed packages matchi
 alias info='pacman -Si'                         # Show info for a package
 alias owns='pacman -Qo'                         # Find which package owns a file
 alias files='pacman -Ql'                        # List files installed by a package
-alias clean='sudo pacman -Rns $(pacman -Qtdq)'  # Remove orphaned packages
+alias clean='sudo pacman -Rns $(pacman -Qtdq 2>/dev/null || echo "")'   # Remove orphaned packages
 
 function pachelp() {
     local aliases=(
@@ -59,16 +77,16 @@ function pachelp() {
         if alias "$alias_name" &>/dev/null; then
             alias "$alias_name"
         else
-            echo "alias $alias_name not found"
+            print -P "%F{yellow}alias $alias_name not found%f"
         fi
     done
 }
 
-#######
-# fzf #
-#######
+#-----
+# fzf
+#-----
 
-if command -v fzf >/dev/null 2>&1; then
+if is_installed fzf; then
 
     # enable shell integration
 
@@ -96,72 +114,62 @@ if command -v fzf >/dev/null 2>&1; then
 
 fi
 
-##################
-# cheat shortcut #
-##################
+#----------------
+# cheat shortcut
+#----------------
 
 function cheat() {
-  curl --silent cheat.sh/$1 | bat
+  curl --silent cheat.sh/$1
 }
 
-################
-# bat settings #
-################
+#--------------
+# bat settings
+#--------------
 
 export BAT_THEME="ansi"
 
-################
-# zoxide setup #
-################
+#--------------
+# zoxide setup
+#--------------
 
-if command -v zoxide >/dev/null 2>&1; then
+if is_installed zoxide; then
     eval "$(zoxide init zsh --cmd cd)"
 fi
 
-############################
-# git interactive checkout #
-############################
+#--------------------------
+# git interactive checkout
+#--------------------------
 
-gsf() {
-    # Ensure 'git' is installed
-    if ! command -v git >/dev/null 2>&1; then
-        echo "Error: 'git' is not installed or not in PATH." >&2
-        return 1
-    fi
-
-    # Ensure 'fzf' is installed
-    if ! command -v fzf >/dev/null 2>&1; then
-        echo "Error: 'fzf' is not installed or not in PATH." >&2
-        return 1
-    fi
-
-    # Check if we're inside a Git repository
-    if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-        echo "Not inside a Git repository." >&2
-        return 1
-    fi
-
-    # Fetch latest remote branches and clean up deleted ones
-    git fetch --all --prune
-
-    # Show local and remote branches (e.g. origin/feature-xyz), de-duplicated
-    local branch
-    branch=$(git for-each-ref --format='%(refname:short)' refs/heads refs/remotes/origin | sort -u | fzf)
-
-    if [[ -n "$branch" ]]; then
-        if [[ "$branch" == origin/* ]]; then
-            # Strip 'origin/' prefix to get local branch name
-            local local_branch="${branch#origin/}"
-
-            # Check if the local branch already exists
-            if git show-ref --verify --quiet "refs/heads/$local_branch"; then
-                git switch "$local_branch"
-            else
-                git switch -c "$local_branch" --track "$branch"
-            fi
-        else
-            # Local branch: switch directly
-            git switch "$branch"
+if is_installed git && is_installed fzf; then
+    function gsf() {
+        # Check if we're inside a Git repository
+        if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+            print -P "%F{yellow}Not inside a Git repository.%f" >&2
+            return 1
         fi
-    fi
-}
+
+        # Fetch latest remote branches and clean up deleted ones
+        git fetch --all --prune
+
+        # Show local and remote branches (e.g. origin/feature-xyz), de-duplicated
+        local branch
+        branch=$(git for-each-ref --format='%(refname:short)' refs/heads refs/remotes/origin | sort -u | fzf)
+
+        if [[ -n "$branch" ]]; then
+            if [[ "$branch" == origin/* ]]; then
+                # Strip 'origin/' prefix to get local branch name
+                local local_branch="${branch#origin/}"
+
+                # Check if the local branch already exists
+                if git show-ref --verify --quiet "refs/heads/$local_branch"; then
+                    git switch "$local_branch"
+                else
+                    git switch -c "$local_branch" --track "$branch"
+                fi
+            else
+                # Local branch: switch directly
+                git switch "$branch"
+            fi
+        fi
+    }
+fi
