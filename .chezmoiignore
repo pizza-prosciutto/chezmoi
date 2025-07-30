@@ -1,8 +1,11 @@
 LICENSE.txt
 README.md
-.tmux.conf
 
 {{- if ne .workstation "home" }}
 .config/Code/User/settings.json
 .config/ghostty/**
+{{- end }}
+
+{{- if ne .workstation "rpi" }}
+.tmux.conf
 {{- end }}
