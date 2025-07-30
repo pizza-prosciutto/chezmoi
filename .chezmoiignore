@@ -8,4 +8,5 @@ README.md
 
 {{- if ne .workstation "rpi" }}
 .tmux.conf
+.oh-my-zsh/custom/ssh.zsh
 {{- end }}
