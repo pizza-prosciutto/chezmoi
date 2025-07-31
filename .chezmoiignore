@@ -10,3 +10,7 @@ README.md
 .tmux.conf
 .oh-my-zsh/custom/ssh.zsh
 {{- end }}
+
+{{- if ne .chezmoi.osRelease.id "arch" }}
+.oh-my-zsh/custom/pacman.zsh
+{{- end }}
