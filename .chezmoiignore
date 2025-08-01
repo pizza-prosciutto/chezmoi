@@ -1,6 +1,8 @@
 LICENSE.txt
 README.md
 
+.oh-my-zsh/custom/ssh.zsh
+
 {{- if ne .workstation "home" }}
 .config/Code/User/settings.json
 .config/ghostty/**
@@ -8,7 +10,6 @@ README.md
 
 {{- if ne .workstation "rpi" }}
 .tmux.conf
-.oh-my-zsh/custom/ssh.zsh
 {{- end }}
 
 {{- if ne .chezmoi.osRelease.id "arch" }}
