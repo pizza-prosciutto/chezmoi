@@ -9,26 +9,3 @@ alias info='pacman -Si'                         # Show info for a package
 alias owns='pacman -Qo'                         # Find which package owns a file
 alias files='pacman -Ql'                        # List files installed by a package
 alias clean='sudo pacman -Rns $(pacman -Qtdq 2>/dev/null || echo "")'   # Remove orphaned packages
-
-function pachelp() {
-    local aliases=(
-        update
-        up
-        install
-        remove
-        purge
-        search
-        list
-        info
-        owns
-        files
-        clean
-    )
-    for alias_name in "${aliases[@]}"; do
-        if alias "$alias_name" &>/dev/null; then
-            alias "$alias_name"
-        else
-            print -P "%F{yellow}alias $alias_name not found%f"
-        fi
-    done
-}
