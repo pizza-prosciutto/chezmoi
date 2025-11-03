@@ -1,16 +1,8 @@
 LICENSE.txt
 README.md
 
-.oh-my-zsh/custom/ssh.zsh
-
-{{- if ne .workstation "home" }}
-.config/Code/User/settings.json
-.config/ghostty/**
-{{- end }}
-
-{{- if ne .workstation "rpi" }}
-.tmux.conf
-{{- end }}
+# scripts and files not in use anymore
+unused/
 
 {{- if ne .chezmoi.osRelease.id "arch" }}
 .oh-my-zsh/custom/pacman.zsh

@@ -6,11 +6,10 @@ Create the main configuration in _~/.config/chezmoi/chezmoi.yaml_:
 
 ```yaml
 data:
-  workstation: "" # {work,home,rpi}
   git:
     email: ""     # git email address
     name: ""      # git username
-# optionally to set neovim as merge tool
+# Optionally, set Neovim as the merge tool
 merge:
   command: "nvim"
   args: ["-d"]
