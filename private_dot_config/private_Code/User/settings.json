@@ -3,7 +3,9 @@
         "editor.defaultFormatter": "redhat.vscode-xml"
     },
     "editor.bracketPairColorization.enabled": true,
+    "editor.cursorStyle": "block",
     "editor.detectIndentation": false,
+    "editor.fontFamily": "'Monaspace Neon Var', 'monospace', monospace",
     "editor.formatOnSave": true,
     "editor.guides.bracketPairs": true,
     "editor.insertSpaces": true,
@@ -13,6 +15,10 @@
     "extensions.ignoreRecommendations": true,
     "git.allowForcePush": true,
     "git.autofetch": true,
+    "github.copilot.enable": {
+        "*": false
+    },
+    "javascript.format.semicolons": "insert",
     "remote.autoForwardPortsSource": "hybrid",
     "telemetry.telemetryLevel": "off",
     "terminal.integrated.sendKeybindingsToShell": true,
@@ -24,7 +30,5 @@
     "workbench.colorTheme": "GitHub Dark Default",
     "workbench.editor.revealIfOpen": true,
     "workbench.editor.wrapTabs": true,
-    "workbench.tree.indent": 20,
-    "editor.cursorStyle": "block",
-    "javascript.format.semicolons": "insert"
+    "workbench.tree.indent": 20
 }
