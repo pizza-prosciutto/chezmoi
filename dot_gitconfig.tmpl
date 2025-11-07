@@ -14,6 +14,8 @@
     unstage = reset HEAD --
     pf = push --force-with-lease
     ss = "!f() { git stash show -p stash@{${1:-0}}; }; f"
+    cm = commit -m
+    ap = add -p
 [core]
     autocrlf = input        # use CRLF endings in Windows checkouts
     editor = nvim
